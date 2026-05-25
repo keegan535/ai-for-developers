@@ -22,7 +22,7 @@
       <p class="kicker">A practical guide for people who already use it</p>
       <h1>AI for Developers</h1>
       <p class="subtitle">Beyond autocomplete — context, tools, agents, and the patterns that make AI actually pay off.</p>
-      <p class="byline">Use <span class="key">→</span> / <span class="key">Space</span> to advance &nbsp;·&nbsp; <span class="key">?</span> for all shortcuts</p>
+      <p class="byline">Use <span class="key">→</span> / <span class="key">Space</span> to advance &nbsp;·&nbsp; <span class="key">?</span> for all shortcuts &nbsp;·&nbsp; swipe on touch</p>
     </div>
     <aside class="notes">
       Set the frame: this isn't "what is ChatGPT." Everyone here uses AI daily. The goal is to move from
@@ -142,14 +142,26 @@
         <div class="window-viz__seg" style="flex:4">Files & tool outputs</div>
         <div class="window-viz__seg window-viz__seg--free" style="flex:2">free</div>
       </div>
+      <div class="zonebar" aria-hidden="true">
+        <div class="zonebar__smart" style="flex:6"><span>Smart zone</span></div>
+        <div class="zonebar__dumb"  style="flex:5"><span>Dumb zone</span></div>
+      </div>
+      <div class="zonebar__axis" aria-hidden="true">
+        <span>fresh &amp; lightly loaded → sharp recall</span>
+        <span>filling up → context rot →</span>
+      </div>
       <ul class="bullets">
         <li>A token ≈ ¾ of a word. Windows today range from ~200K to ~1M tokens — <strong>big, but not infinite.</strong></li>
         <li>It's a budget, not a hard drive. When it fills, something has to give.</li>
+        <li><strong>Not all of it is equally usable.</strong> The lightly-loaded front of the window is the <em>smart zone</em>; as it fills you slide into the <em>dumb zone</em> where recall and reasoning quietly degrade.</li>
       </ul>
     </div>
     <aside class="notes">
       Make the "shared budget" point concrete: a 2,000-line file you @-mention is competing with your conversation
       history for the same space. People think bigger windows fixed this. They didn't — they raised the ceiling.
+      The smart-zone / dumb-zone band makes the next point visual: even within one window, tokens aren't equally
+      usable. Keep the real work in the smart zone; the dumb zone (a near-full window) is where context rot bites —
+      which is exactly the next slide.
     </aside>
   </section>
 
@@ -817,6 +829,7 @@ Move auth to middleware.
 <!-- Chrome: nav arrows, counter, footer -->
 <button id="nav-prev" class="nav-arrow" aria-label="Previous slide">‹</button>
 <button id="nav-next" class="nav-arrow" aria-label="Next slide">›</button>
+<button id="menu-btn" class="menu-btn" aria-label="Slide overview">☰</button>
 <div id="footer"><span id="deck-title">AI for Developers</span></div>
 <div id="counter"><span id="cur">1</span> / <span id="total">1</span></div>
 

@@ -19,6 +19,7 @@
   const overview   = document.getElementById("overview");
   const ovGrid     = document.getElementById("overview-grid");
   const help       = document.getElementById("help");
+  const menuBtn    = document.getElementById("menu-btn");
 
   totalEl.textContent = total;
 
@@ -26,6 +27,9 @@
   function show(i, push) {
     current = Math.max(0, Math.min(total - 1, i));
     slides.forEach((s, idx) => s.classList.toggle("active", idx === current));
+
+    // each slide starts at the top (slides scroll vertically on small screens)
+    slides[current].scrollTop = 0;
 
     bar.style.width = (total > 1 ? (current / (total - 1)) * 100 : 100) + "%";
     curEl.textContent = current + 1;
@@ -107,12 +111,18 @@
   /* ---------- mouse / touch ---------- */
   document.getElementById("nav-next").addEventListener("click", next);
   document.getElementById("nav-prev").addEventListener("click", prev);
+  if (menuBtn) menuBtn.addEventListener("click", toggleOverview);
   [overview, help].forEach((el) =>
     el.addEventListener("click", (e) => { if (e.target === el) closeOverlays(); })
   );
 
   let touchX = null, touchY = null;
   document.addEventListener("touchstart", (e) => {
+    // ignore pinch-zoom, and gestures that belong to scrollable code blocks or
+    // open overlays (so those scroll/interact instead of flipping slides)
+    if (e.touches.length > 1 || e.target.closest(".code, #overview, #notes-panel, #help")) {
+      touchX = null; return;
+    }
     touchX = e.changedTouches[0].clientX;
     touchY = e.changedTouches[0].clientY;
   }, { passive: true });

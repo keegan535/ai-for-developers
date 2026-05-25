@@ -40,6 +40,11 @@ html, body {
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
 }
+/* dynamic viewport units so mobile browser chrome (URL bar) doesn't clip the
+   deck; falls back to the height:100% above where dvh is unsupported. */
+@supports (height: 100dvh) {
+  html, body { height: 100dvh; }
+}
 
 /* gentle background texture */
 body::before {
@@ -278,6 +283,23 @@ code {
 .window-viz__seg:nth-child(3) { background: #60a5fa; }
 .window-viz__seg--free { background: var(--bg-accent); color: var(--ink-faint); }
 
+/* smart zone / dumb zone — a second band on the same token axis as .window-viz,
+   showing how reliability degrades as the window fills left → right. */
+.zonebar {
+  display: flex; height: 38px; border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--line); margin-top: .5rem; box-shadow: var(--shadow);
+}
+.zonebar__smart, .zonebar__dumb {
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: .82rem; font-weight: 700; letter-spacing: .02em;
+}
+.zonebar__smart { background: linear-gradient(90deg, var(--green), #34c08a); }
+.zonebar__dumb  { background: linear-gradient(90deg, var(--amber), var(--red)); }
+.zonebar__axis {
+  display: flex; justify-content: space-between;
+  font-size: .74rem; color: var(--ink-faint); margin-top: .3rem;
+}
+
 /* ---------- numbered steps ---------- */
 .steps { list-style: none; counter-reset: step; }
 .steps li {
@@ -318,6 +340,20 @@ code {
 .nav-arrow:hover { color: var(--blue); border-color: var(--blue); box-shadow: var(--shadow); }
 #nav-prev { left: 18px; }
 #nav-next { right: 18px; }
+
+/* ---------- chrome: touch menu button (overview) ---------- */
+/* Hidden on desktop; revealed on touch / small screens so phone & tablet
+   users can reach the slide overview without a keyboard. */
+.menu-btn {
+  position: fixed; top: 12px; right: 12px; z-index: 45;
+  display: none; align-items: center; justify-content: center;
+  width: 46px; height: 46px; border-radius: 50%;
+  border: 1px solid var(--line); background: rgba(255,255,255,.92);
+  color: var(--ink-soft); font-size: 1.4rem; line-height: 1;
+  cursor: pointer; backdrop-filter: blur(6px); box-shadow: var(--shadow);
+}
+.menu-btn:active { color: var(--blue); border-color: var(--blue); }
+@media (pointer: coarse) { .menu-btn { display: flex; } }
 
 /* ---------- footer & counter ---------- */
 #footer {
@@ -388,10 +424,40 @@ code {
 /* ---------- responsive ---------- */
 @media (max-width: 760px) {
   .cols, .cols--wide-left, .grid--2, .grid--3, .timeline { grid-template-columns: 1fr; }
-  .slide { padding: 6vh 6vw; }
-  .nav-arrow { display: none; }
+  .cols { gap: 1.4rem; }
+
+  /* Tall slides must scroll on a short screen instead of clipping. Top-align
+     (don't vertical-center) so the first line is always reachable, and pad the
+     bottom to clear the floating nav bar. */
+  .slide {
+    align-items: flex-start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 5vh 6vw 12vh;
+  }
+
   .loop { flex-direction: column; }
   .loop__arrow { transform: rotate(90deg); }
+
+  /* Bottom nav bar: arrows in the corners (thumb-reachable), counter centered.
+     Re-shown here — they're touch targets, not just mouse affordances. */
+  .nav-arrow {
+    display: flex; top: auto; bottom: 14px; transform: none;
+    width: 48px; height: 48px; font-size: 1.7rem;
+    background: rgba(255,255,255,.94); box-shadow: var(--shadow);
+  }
+  #nav-prev { left: 14px; }
+  #nav-next { right: 14px; }
+  #footer { display: none; }
+  #counter { left: 0; right: 0; bottom: 26px; text-align: center; }
+
+  .menu-btn { display: flex; }
+
+  /* Roomier overlays on small screens: 2-up overview cards, taller notes. */
+  #overview { padding: 7vh 4vw 4vh; }
+  #overview-grid { grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); gap: .7rem; }
+  #notes-panel { max-height: 52vh; padding: 1rem 1.2rem 1.2rem; }
+  .help__box { padding: 1.6rem 1.5rem; }
 }
 
 /* respect reduced motion */
