@@ -184,7 +184,7 @@
   <section class="slide" data-title="Tokens are the meter">
     <div class="slide__inner">
       <h2>Tokens are the meter</h2>
-      <p class="lead">Cost and latency don't scale with how <em>hard</em> the task is — they scale with how <strong>much context you carry</strong>. Most of the window is re-read on every turn of the loop.</p>
+      <p class="lead">Cost and latency don't scale with how <em>hard</em> the task is — they scale with how <strong>much context you carry</strong>. The whole window is re-read every turn of the loop — cheaply if it's cached, at full price if it isn't.</p>
       <div class="cols">
         <div>
           <h3>What runs up the bill</h3>
@@ -198,7 +198,7 @@
           <div class="callout">
             The habits that keep quality high — curate, clear early, fetch on demand — are the <strong>same</strong> ones that keep you fast and cheap. Good context engineering pays for itself twice.
           </div>
-          <p class="footnote">Prompt caching cuts the cost of a <em>stable</em> prefix (system + instruction files). A window that churns every turn can't be cached — another reason to keep it lean.</p>
+          <p class="footnote">Prompt caching makes a <em>stable</em> prefix cheap to re-read (~10% of input cost) — and that prefix includes the conversation as it grows, not just the system prompt. The catch: any change invalidates the cache from that point forward, so volatile content early in the window (or compaction rewriting history) defeats it. Leaner windows cache better and recover cheaper.</p>
         </div>
       </div>
     </div>
@@ -232,6 +232,7 @@
           </ul>
         </div>
       </div>
+      <p class="footnote">How, in practice: <code>/clear</code> between tasks · <code>/compact</code> when you must keep going · push messy exploration into a <strong>sub-agent</strong> that returns only its conclusion · reference <code>file:line</code> and let the agent fetch, instead of pasting.</p>
     </div>
     <aside class="notes">
       Reframe their identity: you're not "asking an AI," you're curating a workspace for a very capable but
@@ -444,16 +445,20 @@ Make it pass; leave cart code alone.</pre>
         </div>
         <div>
           <pre class="code"><span class="c"># .claude/commands/review.md</span>
-Review the staged diff for:
+---
+allowed-tools: Bash(git diff:*)
+---
+Review the staged diff below:
+
+<span class="h">!`git diff --staged`</span>
+
+Flag, most severe first:
 - correctness &amp; edge cases
 - security issues
-- test coverage gaps
-
-Output findings as a checklist,
-most severe first.</pre>
+- test coverage gaps</pre>
         </div>
       </div>
-      <p class="footnote">Now <code>/review</code> runs the same rigorous review every time — no one has to remember the checklist.</p>
+      <p class="footnote">The <code>!</code> prefix runs the shell and drops its output into the prompt — so <code>/review</code> always sees the real diff, and no one has to remember the checklist.</p>
     </div>
     <aside class="notes">
       Commands turn tribal knowledge into reusable assets. If you find yourself typing the same long prompt twice,
@@ -588,10 +593,46 @@ Move auth to middleware.
 - `/legacy` still calls old path</pre>
         </div>
       </div>
+      <p class="footnote">Tip: bottle this as a <code>/handoff</code> custom command — it writes the progress file for you, so producing the artifact is one keystroke instead of a remembered ritual.</p>
     </div>
     <aside class="notes">
       Reframe: don't think of the model as remembering — think of it as resumable from written state. "Write a plan
       file, then implement it" is the workhorse pattern precisely because it makes work survive a context reset.
+    </aside>
+  </section>
+
+  <!-- GIT WORKFLOW -->
+  <section class="slide" data-title="Git rhythm">
+    <div class="slide__inner">
+      <h2>Adjust your git rhythm</h2>
+      <p class="lead">The agent writes code faster than you can eyeball it. Lean on git as the safety net: tighten your <strong>commit</strong> rhythm so every working state is a checkpoint — and keep <strong>push</strong> deliberate.</p>
+      <div class="cols">
+        <div>
+          <h3>Commit more, smaller</h3>
+          <ul class="bullets">
+            <li>Commit at every green / working state — each accepted change is a <strong>restore point</strong>, not a milestone.</li>
+            <li>When a run goes sideways, <code>git restore .</code> or <code>reset --hard</code> to the last good commit beats arguing the model back on track.</li>
+            <li>A clean tree makes the next diff easy to read <em>before</em> it's locked in.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Push stays deliberate</h3>
+          <ul class="bullets">
+            <li>Local commits are cheap and reversible; a push is outward-facing — keep a human on that button.</li>
+            <li>Don't let agents auto-push. Review the diff, then push yourself.</li>
+            <li>Isolate risky work on a <strong>branch</strong> so a bad run never touches main.</li>
+            <li>Running agents in parallel? <strong>One worktree per agent</strong> — each gets its own branch and working dir off the same repo, so they never clobber each other's tree or index; merge only the runs that pan out.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="footnote">Rule of thumb: <strong>commit like you're saving a game, push like you're shipping.</strong> Let the agent stage and draft the message; you approve the boundary.</p>
+    </div>
+    <aside class="notes">
+      The mindset shift: commits stop being "I finished a feature" and become "I have a known-good state to fall back to." Frequent
+      checkpoints are what make it safe to let the agent run — rollback is cheaper than correction. Push is the line where reversibility
+      drops off, so that's where the human stays in the loop. Ties straight back to "verify everything" and "supervised vs. autonomous."
+      Worktrees are the unlock for true parallelism: one repo, N working dirs, so several agents run at once without fighting over the
+      same files — you review and merge the branches that worked, throw away the rest.
     </aside>
   </section>
 
