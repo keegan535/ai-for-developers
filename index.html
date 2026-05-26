@@ -745,7 +745,42 @@ Move auth to middleware.
     </aside>
   </section>
 
-  <!-- 28. SECURITY -->
+  <!-- 28. CODE OWNERSHIP -->
+  <section class="slide" data-title="Own what you ship">
+    <div class="slide__inner">
+      <h2>You own every line you ship</h2>
+      <p class="lead">The most valuable thing you bring to an AI workflow isn't the prompt — it's <strong>responsibility for the result</strong>. The developer who treats the output as their own work gets far more out of the same model than the one who just clicks accept.</p>
+      <div class="grid grid--2">
+        <div class="card card--dont">
+          <h3>✗ The passenger</h3>
+          <ul class="bullets">
+            <li>Merges what <em>looks</em> right; can't explain it in review a week later.</li>
+            <li>Lets the model pick the architecture, the libraries, the abstractions — by default.</li>
+            <li>Treats "the AI wrote it" as a defense when it breaks in prod.</li>
+            <li>Accumulates code nobody understands. Every bug becomes a cold read.</li>
+          </ul>
+        </div>
+        <div class="card card--do">
+          <h3>✓ The owner</h3>
+          <ul class="bullets">
+            <li>Reads every diff and understands it <em>before</em> it lands — output is a draft, not a verdict.</li>
+            <li>Steers: sets constraints, rejects weak approaches, sends it back to try again.</li>
+            <li>Knows the codebase well enough to catch the confident wrong answer.</li>
+            <li>Can defend every line in review — because it's their line now.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout">Your name is on the commit. Treat AI output like a teammate's PR: useful, fast, and <strong>yours to review</strong> before it merges.</div>
+    </div>
+    <aside class="notes">
+      This is the mindset behind "verify everything." Ownership is the <em>why</em>; verification is the <em>how</em>. The point isn't to slow
+      down — owners ship faster because they steer instead of correcting after the fact, and they're not afraid of a big diff because they
+      understood it as it formed. Reframe acceptance: you're not approving the AI's work, you're claiming it as your own. If you can't
+      explain it, you don't own it yet — and shipping code you can't explain is how teams end up with a codebase no human understands.
+    </aside>
+  </section>
+
+  <!-- 29. SECURITY -->
   <section class="slide" data-title="Security & data hygiene">
     <div class="slide__inner">
       <h2>Security &amp; data hygiene</h2>
@@ -773,7 +808,7 @@ Move auth to middleware.
     </aside>
   </section>
 
-  <!-- 29. PUTTING IT TOGETHER -->
+  <!-- 30. PUTTING IT TOGETHER -->
   <section class="slide" data-title="A day in the life">
     <div class="slide__inner">
       <h2>Putting it together — a real flow</h2>
@@ -792,7 +827,7 @@ Move auth to middleware.
     </aside>
   </section>
 
-  <!-- 30. TAKEAWAYS -->
+  <!-- 31. TAKEAWAYS -->
   <section class="slide" data-title="Takeaways">
     <div class="slide__inner">
       <h2>If you remember five things</h2>
@@ -810,7 +845,7 @@ Move auth to middleware.
     </aside>
   </section>
 
-  <!-- 31. THANKS -->
+  <!-- 32. THANKS -->
   <section class="slide slide--title" data-title="Thanks">
     <div class="slide__inner center">
       <p class="kicker">fin</p>
