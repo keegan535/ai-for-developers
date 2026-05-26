@@ -70,12 +70,20 @@
   function buildOverview() {
     ovGrid.innerHTML = "";
     slides.forEach((s, idx) => {
+      const title = s.dataset.title || "Slide " + (idx + 1);
       const card = document.createElement("div");
       card.className = "ov-card";
+      card.tabIndex = 0;
+      card.setAttribute("role", "button");
+      card.setAttribute("aria-label", "Go to slide " + (idx + 1) + ": " + title);
       card.innerHTML =
         '<span class="ov-card__n">' + String(idx + 1).padStart(2, "0") + "</span>" +
-        '<span class="ov-card__t">' + (s.dataset.title || "Slide " + (idx + 1)) + "</span>";
-      card.addEventListener("click", () => { overview.hidden = true; show(idx); });
+        '<span class="ov-card__t">' + title + "</span>";
+      const go = () => { overview.hidden = true; show(idx); };
+      card.addEventListener("click", go);
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); }
+      });
       ovGrid.appendChild(card);
     });
   }
@@ -85,13 +93,30 @@
   function toggleOverview() {
     const willOpen = overview.hidden;
     closeOverlays();
-    if (willOpen) { overview.hidden = false; markOverviewCurrent(); }
+    if (willOpen) {
+      overview.hidden = false;
+      markOverviewCurrent();
+      // land keyboard focus on the current slide's card so it's reachable
+      ovGrid.children[current]?.focus();
+    }
   }
 
   /* ---------- keyboard ---------- */
   document.addEventListener("keydown", (e) => {
     // let modifier combos (copy, devtools, etc.) pass through
     if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+    // While a modal overlay is open, don't drive the slides underneath it.
+    // Esc closes it; its own toggle key still works; focused cards handle
+    // Enter/Space themselves. (Notes panel is exempt — it follows the slide.)
+    if (!overview.hidden || !help.hidden) {
+      switch (e.key) {
+        case "Escape": e.preventDefault(); closeOverlays(); break;
+        case "o": case "O": e.preventDefault(); toggleOverview(); break;
+        case "?": e.preventDefault(); toggleHelp(); break;
+      }
+      return;
+    }
 
     switch (e.key) {
       case "ArrowRight": case " ": case "PageDown":

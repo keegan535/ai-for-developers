@@ -9,7 +9,7 @@
   --bg-accent: #eef2f9;
   --ink:       #16213a;   /* primary text */
   --ink-soft:  #4a5670;   /* secondary text */
-  --ink-faint: #8a93a8;   /* tertiary / footnotes */
+  --ink-faint: #646d82;   /* tertiary / footnotes (AA on --bg) */
   --blue:      #2563eb;
   --blue-dark: #1d4ed8;
   --blue-soft: #dbe6ff;
@@ -278,9 +278,10 @@ code {
   color: #fff; font-size: .82rem; font-weight: 600; text-align: center;
   padding: 0 .5rem;
 }
-.window-viz__seg:nth-child(1) { background: #1d4ed8; }
-.window-viz__seg:nth-child(2) { background: #3b82f6; }
-.window-viz__seg:nth-child(3) { background: #60a5fa; }
+/* deep→lighter blue band; kept dark enough that the white labels clear WCAG AA */
+.window-viz__seg:nth-child(1) { background: #1a3f9e; }
+.window-viz__seg:nth-child(2) { background: #1d4ed8; }
+.window-viz__seg:nth-child(3) { background: #2563eb; }
 .window-viz__seg--free { background: var(--bg-accent); color: var(--ink-faint); }
 
 /* smart zone / dumb zone — a second band on the same token axis as .window-viz,
@@ -464,4 +465,39 @@ code {
 @media (prefers-reduced-motion: reduce) {
   .slide.active .slide__inner { animation: none; }
   * { transition: none !important; }
+}
+
+/* ---------- print / PDF export ----------
+   The on-screen deck shows one absolutely-positioned slide at a time, so a
+   naive print yields a single page. Here we unstack every slide into normal
+   flow, one per page, and drop the interactive chrome — turning "Save as PDF"
+   into a shareable handout. */
+@media print {
+  html, body { height: auto; overflow: visible; background: #fff; }
+  body::before { display: none; }
+
+  /* hide all interactive chrome & overlays */
+  #progress, .nav-arrow, .menu-btn, #footer, #counter,
+  #notes-panel, #overview, #help { display: none !important; }
+
+  #deck { position: static; height: auto; }
+
+  .slide {
+    position: static; inset: auto;
+    opacity: 1; visibility: visible; pointer-events: auto;
+    align-items: flex-start;
+    padding: 8vh 8vw;
+    break-after: page;
+    page-break-after: always;   /* legacy alias for older print engines */
+  }
+  .slide:last-child { break-after: auto; page-break-after: auto; }
+  .slide__inner { max-width: none; }
+  .slide.active .slide__inner { animation: none; }
+
+  /* flat look prints cleaner than drop shadows */
+  .card, .timeline__step, .loop__node, .code,
+  .window-viz, .zonebar { box-shadow: none; }
+
+  /* avoid splitting a visual element across a page break */
+  .card, .timeline__step, .loop__node, .callout, .code { break-inside: avoid; }
 }

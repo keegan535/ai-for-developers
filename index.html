@@ -244,11 +244,14 @@
           </ul>
         </div>
       </div>
-      <p class="footnote">How, in practice: <code>/clear</code> between tasks · <code>/compact</code> when you must keep going · push messy exploration into a <strong>sub-agent</strong> that returns only its conclusion · reference <code>file:line</code> and let the agent fetch, instead of pasting.</p>
+      <div class="callout callout--warn">Warning sign: the model starts repeating itself, re-reading files, or contradicting earlier work. That's context rot — <strong>clear and restart</strong>, don't push harder.</div>
+      <p class="footnote">In practice: one session, one task — <code>/clear</code> between them · <code>/compact</code> when you must keep going (then check what survived) · push messy exploration into a <strong>sub-agent</strong> that returns only its conclusion · reference <code>file:line</code> and let the agent fetch, instead of pasting.</p>
     </div>
     <aside class="notes">
       Reframe their identity: you're not "asking an AI," you're curating a workspace for a very capable but
-      context-blind collaborator. Everything else in this talk is a tool for doing this well.
+      context-blind collaborator. Everything else in this talk is a tool for doing this well. Name the failure mode
+      out loud: a fresh window almost always beats a tired one, so when rot sets in, clear and restart rather than
+      pushing the same session harder — stop hoarding one mega-session just because "it has all the context."
     </aside>
   </section>
 
@@ -547,35 +550,7 @@ PreToolUse(Bash):
     </div>
   </section>
 
-  <!-- 22. CONTEXT IN PRACTICE -->
-  <section class="slide" data-title="Managing context in practice">
-    <div class="slide__inner">
-      <h2>Managing context in practice</h2>
-      <div class="cols">
-        <div>
-          <h3>Habits that keep quality high</h3>
-          <ul class="bullets">
-            <li><strong>One session, one task.</strong> New task → clear the context. Don't let threads sprawl.</li>
-            <li><strong>Clear early, clear often.</strong> A fresh window almost always outperforms a tired one.</li>
-            <li><strong>Compact</strong> long sessions to a summary when the tool offers it — but verify what survived.</li>
-            <li><strong>Front-load the essentials</strong>; let the agent fetch the rest on demand.</li>
-          </ul>
-        </div>
-        <div>
-          <div class="callout callout--warn">
-            Warning sign: the model starts repeating itself, re-reading files, or contradicting earlier work. That's context rot — <strong>clear and restart</strong>, don't push harder.
-          </div>
-          <p class="footnote">Cost bonus: short, focused windows are cheaper and faster on every turn.</p>
-        </div>
-      </div>
-    </div>
-    <aside class="notes">
-      The single most impactful habit for experienced users: stop hoarding one mega-session. The instinct is "it has
-      all the context!" — but that context is mostly rot by message 50. Disposable, scoped sessions win.
-    </aside>
-  </section>
-
-  <!-- 23. HANDOFFS -->
+  <!-- HANDOFFS -->
   <section class="slide" data-title="Handoffs">
     <div class="slide__inner">
       <h2>Handoffs: context dies, artifacts persist</h2>
