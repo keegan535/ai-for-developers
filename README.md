@@ -9,6 +9,7 @@ Just open the file:
 
 ```bash
 open index.html        # macOS
+xdg-open index.html    # Linux
 ```
 
 Or serve it locally (nicer URLs / fullscreen behaves better in some browsers):
