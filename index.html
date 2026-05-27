@@ -21,7 +21,7 @@
     <div class="slide__inner center">
       <p class="kicker">A practical guide for people who already use it</p>
       <h1>AI for Developers</h1>
-      <p class="subtitle">Beyond autocomplete — context, tools, agents, and the patterns that make AI actually pay off.</p>
+      <p class="subtitle">Beyond autocomplete — the model, the harness around it, and the patterns that make AI actually pay off.</p>
       <p class="byline">Use <span class="key">→</span> / <span class="key">Space</span> to advance &nbsp;·&nbsp; <span class="key">?</span> for all shortcuts &nbsp;·&nbsp; swipe on touch</p>
     </div>
     <aside class="notes">
@@ -39,19 +39,18 @@
         <div>
           <h3>We'll go deep on</h3>
           <ul class="bullets">
-            <li>The <strong>agent loop</strong> every tool shares</li>
-            <li><strong>Context windows</strong>, cost & what fills them</li>
-            <li><strong>Instruction files</strong> that stop repetition</li>
-            <li>Tools, MCP, commands, <strong>hooks</strong>, sub-agents</li>
-            <li>Workflows, <strong>handoffs</strong> & repeatable patterns</li>
-            <li><strong>Trust & safety</strong> — verification & prompt injection</li>
+            <li><strong>Model vs. harness</strong> — and the loop that joins them</li>
+            <li><strong>Context</strong> — the finite budget you curate</li>
+            <li>The <strong>levers</strong>: instruction files, tools/MCP, commands, hooks, sub-agents</li>
+            <li><strong>Workflows</strong>, handoffs &amp; repeatable patterns</li>
+            <li><strong>Trust &amp; safety</strong> — verification &amp; prompt injection</li>
           </ul>
         </div>
         <div>
           <h3>Ground rules</h3>
           <ul class="bullets">
             <li>Tool-agnostic — concepts apply to <strong>any</strong> harness</li>
-            <li>Examples use <span class="tag">Claude Code</span> & <span class="tag">OpenCode</span>, but map cleanly to Cursor, Codex, Aider, Gemini CLI…</li>
+            <li>Examples use <span class="tag">Claude Code</span> &amp; <span class="tag">OpenCode</span>, but map cleanly to Cursor, Codex, Aider, Gemini CLI…</li>
             <li>We skip the "what is a prompt" basics</li>
           </ul>
         </div>
@@ -63,12 +62,16 @@
     </aside>
   </section>
 
-  <!-- 3. SECTION: MENTAL MODEL -->
-  <section class="slide slide--section" data-title="§ The Mental Model">
+  <!-- ====================================================== -->
+  <!-- §01 — THE CORE: HOW A HARNESS WORKS                     -->
+  <!-- ====================================================== -->
+
+  <!-- 3. SECTION: HOW A HARNESS WORKS -->
+  <section class="slide slide--section" data-title="§ How a Harness Works">
     <div class="slide__inner center">
       <span class="section-num">01</span>
-      <h2 class="section-title">The Mental Model</h2>
-      <p class="section-sub">If you only remember one thing, remember the loop.</p>
+      <h2 class="section-title">How a Harness Works</h2>
+      <p class="section-sub">The model is fixed. The harness — and the context you feed it — is everything you control.</p>
     </div>
   </section>
 
@@ -87,23 +90,51 @@
         </div>
         <div class="timeline__step timeline__step--now">
           <span class="timeline__label">Agentic harness</span>
-          <p>The model <strong>reads your files, runs commands, edits code, checks its own work</strong> — in a loop, with tools.</p>
+          <p>A program <strong>reads your files, runs commands, edits code, checks its own work</strong> — driving the model in a loop, with tools.</p>
         </div>
       </div>
       <div class="callout">
-        Most of the leverage left on the table is in that third column. The skills are different from prompting a chat box.
+        Most of the leverage left on the table is in that third column — and it's a different skill from prompting a chat box. The next slide is the key distinction it rests on.
       </div>
     </div>
     <aside class="notes">
       The mistake intermediate users make: bringing chat-era habits (paste a blob, get a blob) into an agentic tool.
-      The agent can go *get* the context itself — your job shifts from "supply everything" to "curate & steer."
+      The agent can go *get* the context itself — your job shifts from "supply everything" to "curate &amp; steer." Set up
+      the next slide: that third column has two parts — the model, and the harness driving it.
     </aside>
   </section>
 
-  <!-- 5. THE AGENT LOOP -->
+  <!-- 5. MODEL VS. HARNESS -->
+  <section class="slide" data-title="Model vs. harness">
+    <div class="slide__inner">
+      <h2>Two different things: the model and the harness</h2>
+      <p class="lead">Everyone says "the AI." It's really <strong>two</strong> parts — and only one of them is yours to change.</p>
+      <div class="grid grid--2">
+        <div class="card">
+          <span class="card__tag">fixed</span>
+          <h3>The model</h3>
+          <p>A pretrained network that does exactly one thing: <strong>text in → text out</strong>. It's frozen — same weights for everyone, no memory between sessions, can't see your files or run anything by itself.</p>
+        </div>
+        <div class="card">
+          <span class="card__tag">yours</span>
+          <h3>The harness</h3>
+          <p>The program wrapped around the model — Claude Code, Cursor, Codex, Aider. It <strong>feeds the model context, exposes tools, runs the calls it asks for, and loops.</strong> Everything you configure lives here.</p>
+        </div>
+      </div>
+      <div class="callout">Brain vs. body: the model supplies the judgment, the harness gives it senses, hands, and memory. <strong>Same model + a better harness = dramatically better results.</strong> You can't tune the brain, so the whole game is what you put around it.</div>
+    </div>
+    <aside class="notes">
+      This is the slide the whole talk hangs on. Hammer the split: when something goes well or badly, ask "was that the
+      model or the harness?" Almost always it's the harness — what context it had, which tools it could reach, whether it
+      could verify its work. People blame/credit the model; the leverage is in the harness. Next slide shows how the two
+      actually take turns: the loop.
+    </aside>
+  </section>
+
+  <!-- 6. THE AGENT LOOP -->
   <section class="slide" data-title="The agent loop">
     <div class="slide__inner">
-      <h2>Every agent is the same loop</h2>
+      <h2>The loop: how the two work together</h2>
       <div class="loop">
         <div class="loop__node">Context<br><small>prompt + files + history</small></div>
         <div class="loop__arrow">→</div>
@@ -114,32 +145,53 @@
         <div class="loop__node">Result<br><small>fed back in</small></div>
         <div class="loop__arrow loop__arrow--back">↺</div>
       </div>
-      <p class="lead">Claude Code, OpenCode, Cursor's agent, Codex, Aider — <strong>different paint, identical engine.</strong> Once you see the loop, every tool's features (instruction files, hooks, sub-agents, MCP) are just ways to shape one of these four boxes.</p>
+      <p class="lead">The harness assembles the <strong>context</strong> and hands it to the <strong>model</strong>; the model asks for a <strong>tool call</strong>; the harness runs it and feeds the <strong>result</strong> back. Round and round. Claude Code, OpenCode, Cursor, Codex, Aider — <strong>different paint, identical engine.</strong></p>
+      <p class="footnote">Once you see the loop, every feature is just a way to shape one of these four boxes — which is exactly how the rest of this talk is organized.</p>
     </div>
     <aside class="notes">
-      Drive this home: features are not random. Instruction files shape "Context." MCP & commands shape
-      "Tool call." Hooks wrap the loop. Sub-agents spin up a *fresh* loop. This is the spine of the whole talk.
+      Drive this home: features are not random. Instruction files shape "Context." Tools &amp; MCP shape "Tool call."
+      Hooks wrap the loop. Sub-agents spin up a *fresh* loop. This is the spine of the whole talk. The model only ever
+      sees text and emits text; the harness is what turns "emit a tool call" into an actual edit on disk.
     </aside>
   </section>
 
-  <!-- 6. SECTION: CONTEXT -->
-  <section class="slide slide--section" data-title="§ Context Is Everything">
-    <div class="slide__inner center">
-      <span class="section-num">02</span>
-      <h2 class="section-title">Context Is Everything</h2>
-      <p class="section-sub">The model is frozen. The context is the variable you control.</p>
+  <!-- 7. TOOLS -->
+  <section class="slide" data-title="Tools">
+    <div class="slide__inner">
+      <h2>Tools: how the harness lets the model act</h2>
+      <p class="lead">The model can't touch your machine. <strong>Tools</strong> are the functions the harness exposes; the model <em>chooses</em> which to call, the harness <em>runs</em> it and feeds the result back.</p>
+      <div class="cols">
+        <div>
+          <h3>Typical built-ins</h3>
+          <ul class="bullets">
+            <li>Read / write / edit files</li>
+            <li>Run shell commands</li>
+            <li>Search code (grep / semantic)</li>
+            <li>Fetch web pages &amp; docs</li>
+          </ul>
+        </div>
+        <div>
+          <div class="callout">
+            <strong>The division of labor:</strong> the <em>model decides</em>, the <em>harness executes</em>. That's the loop again — tools are how it pulls context in and pushes changes out.
+          </div>
+        </div>
+      </div>
     </div>
+    <aside class="notes">
+      Implication for users: you don't have to paste files — let it read them. You don't have to run tests and paste
+      output — let it run them. Letting the agent gather its own context is usually better than pre-loading everything.
+    </aside>
   </section>
 
-  <!-- 7. CONTEXT WINDOW -->
+  <!-- 8. CONTEXT WINDOW -->
   <section class="slide" data-title="The context window">
     <div class="slide__inner">
       <h2>The context window</h2>
-      <p class="lead">Everything the model can "see" right now — your messages, its replies, file contents, tool outputs, system & instruction files — all share <strong>one finite budget of tokens</strong>.</p>
+      <p class="lead">Everything the model can "see" right now — your messages, its replies, file contents, tool outputs, system &amp; instruction files — all share <strong>one finite budget of tokens</strong>.</p>
       <div class="window-viz">
         <div class="window-viz__seg" style="flex:2">System + instructions</div>
         <div class="window-viz__seg" style="flex:3">Conversation history</div>
-        <div class="window-viz__seg" style="flex:4">Files & tool outputs</div>
+        <div class="window-viz__seg" style="flex:4">Files &amp; tool outputs</div>
         <div class="window-viz__seg window-viz__seg--free" style="flex:2">free</div>
       </div>
       <div class="zonebar" aria-hidden="true">
@@ -153,75 +205,18 @@
       <ul class="bullets">
         <li>A token ≈ ¾ of a word. Windows today range from ~200K to ~1M tokens — <strong>big, but not infinite.</strong></li>
         <li>It's a budget, not a hard drive. When it fills, something has to give.</li>
-        <li><strong>Not all of it is equally usable.</strong> The lightly-loaded front of the window is the <em>smart zone</em>; as it fills you slide into the <em>dumb zone</em> where recall and reasoning quietly degrade.</li>
+        <li><strong>Not all of it is equally usable.</strong> The lightly-loaded front is the <em>smart zone</em>; as it fills you slide into the <em>dumb zone</em> where recall and reasoning quietly degrade.</li>
       </ul>
     </div>
     <aside class="notes">
       Make the "shared budget" point concrete: a 2,000-line file you @-mention is competing with your conversation
       history for the same space. People think bigger windows fixed this. They didn't — they raised the ceiling.
-      The smart-zone / dumb-zone band makes the next point visual: even within one window, tokens aren't equally
-      usable. Keep the real work in the smart zone; the dumb zone (a near-full window) is where context rot bites —
-      which is exactly the next slide.
+      The smart-zone / dumb-zone band sets up the next two slides: even within one window, tokens aren't equally usable,
+      and a near-full window costs you in both quality and money.
     </aside>
   </section>
 
-  <!-- 8. CONTEXT IMPLICATIONS -->
-  <section class="slide" data-title="Context implications">
-    <div class="slide__inner">
-      <h2>What a full window does to you</h2>
-      <div class="cols">
-        <div>
-          <ul class="bullets">
-            <li><strong>Context rot.</strong> Quality degrades as the window fills — long sessions literally get "dumber."</li>
-            <li><strong>Lost in the middle.</strong> Models attend best to the start and end; stuff buried mid-context gets ignored.</li>
-            <li><strong>Distraction.</strong> Irrelevant files and dead-end tool output crowd out the signal.</li>
-          </ul>
-        </div>
-        <div>
-          <ul class="bullets">
-            <li><strong>Cost & latency scale with tokens.</strong> A bloated context is slower and pricier on every turn.</li>
-            <li><strong>Stale state.</strong> That file it read 40 messages ago? It may be acting on an old version.</li>
-          </ul>
-          <div class="callout callout--warn">More context is not more better. Relevance &gt; volume.</div>
-        </div>
-      </div>
-    </div>
-    <aside class="notes">
-      "Context rot" is the key term — relate it to their own experience: the model nails the first task in a session
-      and flails by the tenth. It's not getting tired; the window is polluted. The fix (next slides) is curation + fresh starts.
-    </aside>
-  </section>
-
-  <!-- COST / SPEED -->
-  <section class="slide" data-title="Tokens are the meter">
-    <div class="slide__inner">
-      <h2>Tokens are the meter</h2>
-      <p class="lead">Cost and latency don't scale with how <em>hard</em> the task is — they scale with how <strong>much context you carry</strong>. The whole window is re-read every turn of the loop — cheaply if it's cached, at full price if it isn't.</p>
-      <div class="cols">
-        <div>
-          <h3>What runs up the bill</h3>
-          <ul class="bullets">
-            <li><strong>Big window × many turns.</strong> Carry 100K tokens for 10 turns and you've paid for that context ten times.</li>
-            <li><strong>Pasting what could be fetched.</strong> Dumping a whole file costs more than letting the agent read the lines it needs.</li>
-            <li><strong>Re-work from rot.</strong> A confused session that loops and retries burns tokens going nowhere.</li>
-          </ul>
-        </div>
-        <div>
-          <div class="callout">
-            The habits that keep quality high — curate, clear early, fetch on demand — are the <strong>same</strong> ones that keep you fast and cheap. Good context engineering pays for itself twice.
-          </div>
-          <p class="footnote">Prompt caching makes a <em>stable</em> prefix cheap to re-read (~10% of input cost) — and that prefix includes the conversation as it grows, not just the system prompt. The catch: any change invalidates the cache from that point forward, so volatile content early in the window (or compaction rewriting history) defeats it. Leaner windows cache better and recover cheaper.</p>
-        </div>
-      </div>
-    </div>
-    <aside class="notes">
-      Make "context is a budget" literal, not a metaphor: the model re-reads the window each turn, so a bloated context is a tax
-      you pay on every step, not once. The convenient part — the cost lesson and the quality lesson are identical, so curation
-      fixes both. Mention caching so the sharp folks don't object, but note it only helps the parts that don't change.
-    </aside>
-  </section>
-
-  <!-- 9. YOU ARE THE CONTEXT MANAGER -->
+  <!-- 9. CONTEXT ENGINEERING -->
   <section class="slide" data-title="Context engineering">
     <div class="slide__inner">
       <h2>Your real job: context engineering</h2>
@@ -255,7 +250,41 @@
     </aside>
   </section>
 
-  <!-- WORKED EXAMPLE -->
+  <!-- 10. THE COST OF A FULL WINDOW (quality + money) -->
+  <section class="slide" data-title="The cost of a full window">
+    <div class="slide__inner">
+      <h2>What a full window costs you</h2>
+      <p class="lead">More context is not more better. As the window fills you pay <strong>twice</strong> — in quality and in money.</p>
+      <div class="cols">
+        <div>
+          <h3>Quality degrades</h3>
+          <ul class="bullets">
+            <li><strong>Context rot.</strong> Long sessions literally get "dumber" as the window fills.</li>
+            <li><strong>Lost in the middle.</strong> Models attend to the start and end; detail buried mid-context gets ignored.</li>
+            <li><strong>Distraction &amp; stale state.</strong> Dead-end output crowds the signal — and a file read 40 messages ago may be a stale version.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Tokens are the meter</h3>
+          <ul class="bullets">
+            <li>The whole window is <strong>re-read every turn</strong> — carry 100K tokens for 10 turns and you've paid for that context ten times.</li>
+            <li>Cost &amp; latency scale with the tokens you carry, not how hard the task is.</li>
+            <li>Pasting what could be fetched, and re-work from rot, both burn tokens going nowhere.</li>
+          </ul>
+          <div class="callout callout--warn">Relevance &gt; volume. The habits that keep quality high keep you fast and cheap.</div>
+        </div>
+      </div>
+      <p class="footnote">Prompt caching makes a <em>stable</em> prefix cheap to re-read (~10% of input cost), but any change invalidates it from that point forward — so volatile content early in the window (or compaction rewriting history) defeats it. Leaner windows cache better and recover cheaper.</p>
+    </div>
+    <aside class="notes">
+      "Context rot" is the key term — relate it to their own experience: the model nails the first task and flails by the
+      tenth. It's not getting tired; the window is polluted. And the convenient part: the cost lesson and the quality lesson
+      are identical, so curation fixes both. Mention caching so the sharp folks don't object, but note it only helps the
+      parts that don't change.
+    </aside>
+  </section>
+
+  <!-- 11. WORKED EXAMPLE -->
   <section class="slide" data-title="Same task, two contexts">
     <div class="slide__inner">
       <h2>Same task, two contexts</h2>
@@ -282,53 +311,49 @@ Make it pass; leave cart code alone.</pre>
       </div>
     </div>
     <aside class="notes">
-      This is the whole talk in one slide. Same model, wildly different outcomes. The right column supplies: the two files that
+      This is the whole core in one slide. Same model, wildly different outcomes. The right column supplies: the two files that
       matter (not the repo), a precise symptom, a failing test as the spec, and an explicit boundary ("leave cart code alone").
       Walk the room through why each line earns its place. If you demo anything live, demo this contrast.
     </aside>
   </section>
 
-  <!-- 10. WAYS TO GIVE CONTEXT -->
-  <section class="slide" data-title="Ways to give context">
+  <!-- ====================================================== -->
+  <!-- THE LEVERS — shaping the loop                          -->
+  <!-- ====================================================== -->
+
+  <!-- 12. THE FIVE LEVERS -->
+  <section class="slide" data-title="The five levers">
     <div class="slide__inner">
-      <h2>The ways to supply context</h2>
+      <h2>The levers you actually control</h2>
+      <p class="lead">You can't change the model — but the harness gives you a handful of ways to shape the boxes in the loop. The skill is matching the <em>lifetime</em> of a piece of context to the right one.</p>
       <div class="grid grid--3">
-        <div class="card"><span class="card__tag">ad hoc</span><h3>Inline</h3><p>What you type, and files you @-mention or paste right now.</p></div>
         <div class="card"><span class="card__tag">per project</span><h3>Instruction files</h3><p>Always-loaded rules: <code>CLAUDE.md</code>, <code>AGENTS.md</code>.</p></div>
         <div class="card"><span class="card__tag">on demand</span><h3>Tools &amp; MCP</h3><p>The agent fetches context itself — search, docs, DBs, APIs.</p></div>
         <div class="card"><span class="card__tag">reusable</span><h3>Commands</h3><p>Saved prompts/workflows you invoke with <code>/</code>.</p></div>
+        <div class="card"><span class="card__tag">automatic</span><h3>Hooks</h3><p>Deterministic scripts the harness runs at lifecycle events.</p></div>
         <div class="card"><span class="card__tag">isolated</span><h3>Sub-agents</h3><p>A separate window for a focused task; only the result returns.</p></div>
       </div>
-      <p class="footnote">The rest of the talk is a tour of these — when to reach for each.</p>
+      <p class="footnote">this-task → inline · this-project → instruction file · fetchable → tool · must-always-happen → hook · isolated job → sub-agent. We'll tour each.</p>
     </div>
     <aside class="notes">
-      This is the map for sections 3 & 4. The skill is matching the *lifetime* of a piece of context to the right
-      mechanism: this-task → inline; this-project → instruction file; fetchable → tool; isolated job → sub-agent.
+      This is the map for the rest of the talk. Tools we just covered as the loop's "act" box; the other four are how you
+      pre-load, automate, and isolate context. Tie each back to a box in the loop as you introduce it.
     </aside>
   </section>
 
-  <!-- SECTION: PERSISTENT CONTEXT -->
-  <section class="slide slide--section" data-title="§ Persistent Context">
-    <div class="slide__inner center">
-      <span class="section-num">03</span>
-      <h2 class="section-title">Persistent Context</h2>
-      <p class="section-sub">Instruction files — stop repeating yourself.</p>
-    </div>
-  </section>
-
-  <!-- 12. INSTRUCTION FILES -->
+  <!-- 13. INSTRUCTION FILES (+ best-practice tips folded in) -->
   <section class="slide" data-title="Instruction files">
     <div class="slide__inner">
-      <h2>Project instruction files</h2>
-      <p class="lead">A file in your repo that's loaded into context <strong>every session</strong>. The single highest-leverage thing most teams under-use.</p>
+      <h2>Instruction files: stop repeating yourself</h2>
+      <p class="lead">A file in your repo loaded into context <strong>every session</strong> — the single highest-leverage thing most teams under-use.</p>
       <div class="cols cols--wide-left">
         <div>
           <ul class="bullets">
             <li><span class="tag">CLAUDE.md</span> <span class="tag">AGENTS.md</span> <span class="tag">.cursorrules</span> — same idea, different tool. <code>AGENTS.md</code> is emerging as the cross-tool standard.</li>
             <li>Layer them: <strong>global</strong> (your prefs) → <strong>project</strong> (repo root) → <strong>directory</strong> (subfolder specifics).</li>
-            <li>Put in: build/test commands, conventions, architecture notes, "don'ts."</li>
-            <li>Keep out: anything obvious from the code, or that goes stale fast.</li>
+            <li>Put in: build/test commands, conventions, architecture notes, "don'ts." Keep out: anything obvious from the code, or that goes stale fast.</li>
           </ul>
+          <div class="callout">Tips: be <strong>specific &amp; actionable</strong> ("run <code>npm run lint</code> before commits" beats "write clean code") · keep it a <strong>living document</strong> · every line is a tax on every turn, so it's <strong>not a dumping ground</strong> — capture the <em>why</em>, not what the code already says. When the model gets something wrong twice, add a line instead of re-correcting it.</div>
         </div>
         <div>
           <pre class="code"><span class="c"># AGENTS.md</span>
@@ -348,69 +373,13 @@ Make it pass; leave cart code alone.</pre>
       </div>
     </div>
     <aside class="notes">
-      Treat it like a README for your AI teammate. Best practice: when the model does something wrong twice,
-      that's a signal — add a line to the instruction file instead of correcting it again every session.
+      Treat it like a README for your AI teammate. The meta-point: persistent context is a tax you pay on every single
+      request, so a tight 40-line AGENTS.md that's always right beats a 400-line one that's 80% noise. Wrong instructions
+      get followed confidently — prune relentlessly.
     </aside>
   </section>
 
-  <!-- BEST PRACTICES -->
-  <section class="slide" data-title="Instruction best practices">
-    <div class="slide__inner">
-      <h2>Make persistent context earn its tokens</h2>
-      <div class="grid grid--2">
-        <div class="card card--do"><h3>✓ Specific &amp; actionable</h3><p>"Run <code>npm run lint</code> before every commit" beats "write clean code."</p></div>
-        <div class="card card--do"><h3>✓ Living document</h3><p>Update it when conventions change. Stale rules are worse than none.</p></div>
-        <div class="card card--do"><h3>✓ Layered &amp; scoped</h3><p>Repo-wide rules at root; subfolder rules in the subfolder.</p></div>
-        <div class="card card--dont"><h3>✗ Not a dumping ground</h3><p>Every line costs tokens on every turn. Short and sharp wins.</p></div>
-        <div class="card card--dont"><h3>✗ Don't restate the code</h3><p>The model can read the file. Capture the <em>why</em>, not the what.</p></div>
-        <div class="card card--dont"><h3>✗ Don't let it rot</h3><p>Wrong instructions get followed confidently. Prune relentlessly.</p></div>
-      </div>
-    </div>
-    <aside class="notes">
-      The meta-point: persistent context is a tax you pay on every single request. A tight 40-line AGENTS.md that's
-      always right beats a 400-line one that's 80% noise. Quality and brevity, not completeness.
-    </aside>
-  </section>
-
-  <!-- 15. SECTION: EXTENDING -->
-  <section class="slide slide--section" data-title="§ Extending the Harness">
-    <div class="slide__inner center">
-      <span class="section-num">04</span>
-      <h2 class="section-title">Extending the Harness</h2>
-      <p class="section-sub">Tools, MCP, commands, hooks, sub-agents.</p>
-    </div>
-  </section>
-
-  <!-- 16. TOOLS -->
-  <section class="slide" data-title="Tools">
-    <div class="slide__inner">
-      <h2>Tools: how the model acts</h2>
-      <p class="lead">The model can't actually touch your machine. <strong>Tools</strong> are the functions the harness exposes — and the model chooses which to call.</p>
-      <div class="cols">
-        <div>
-          <h3>Typical built-ins</h3>
-          <ul class="bullets">
-            <li>Read / write / edit files</li>
-            <li>Run shell commands</li>
-            <li>Search code (grep / semantic)</li>
-            <li>Fetch web pages &amp; docs</li>
-          </ul>
-        </div>
-        <div>
-          <div class="callout">
-            <strong>The division of labor:</strong> the <em>model decides</em>, the <em>harness executes</em> and feeds the result back.
-            That's the loop again — tools are how it pulls context in and pushes changes out.
-          </div>
-        </div>
-      </div>
-    </div>
-    <aside class="notes">
-      Implication for users: you don't have to paste files — let it read them. You don't have to run tests and paste
-      output — let it run them. Letting the agent gather its own context is usually better than pre-loading everything.
-    </aside>
-  </section>
-
-  <!-- 17. MCP -->
+  <!-- 14. MCP -->
   <section class="slide" data-title="MCP">
     <div class="slide__inner">
       <h2>MCP — one plug for every tool</h2>
@@ -445,7 +414,7 @@ Make it pass; leave cart code alone.</pre>
     </aside>
   </section>
 
-  <!-- 18. COMMANDS -->
+  <!-- 15. COMMANDS -->
   <section class="slide" data-title="Custom commands">
     <div class="slide__inner">
       <h2>Custom commands: bottle your workflows</h2>
@@ -473,15 +442,15 @@ Flag, most severe first:
 - test coverage gaps</pre>
         </div>
       </div>
-      <p class="footnote">The <code>!</code> prefix runs the shell and drops its output into the prompt — so <code>/review</code> always sees the real diff, and no one has to remember the checklist.</p>
+      <p class="footnote">The <code>!</code> prefix runs the shell and drops its output into the prompt — so <code>/review</code> always sees the real diff, and no one has to remember the checklist. If you type the same long prompt twice, that's a command.</p>
     </div>
     <aside class="notes">
-      Commands turn tribal knowledge into reusable assets. If you find yourself typing the same long prompt twice,
-      that's a command. Team-shared commands also standardize quality across people of different experience levels.
+      Commands turn tribal knowledge into reusable assets. Team-shared commands also standardize quality across people of
+      different experience levels — the junior runs the same <code>/review</code> the staff engineer wrote.
     </aside>
   </section>
 
-  <!-- 19. HOOKS -->
+  <!-- 16. HOOKS -->
   <section class="slide" data-title="Hooks">
     <div class="slide__inner">
       <h2>Hooks: deterministic guardrails</h2>
@@ -507,14 +476,15 @@ PreToolUse(Bash):
     `rm -rf` or touches prod</pre>
         </div>
       </div>
+      <p class="footnote">Key distinction from commands: a command is a prompt the <em>model</em> interprets (probabilistic); a hook is code the <em>harness</em> runs (deterministic). When "it must always happen," use a hook — never an instruction in CLAUDE.md.</p>
     </div>
     <aside class="notes">
-      Key distinction from commands: a command is a prompt the *model* interprets (probabilistic). A hook is code the
-      *harness* runs (deterministic). When "it must always happen," use a hook, never an instruction in CLAUDE.md.
+      This is what lets you lengthen the leash safely: deterministic checks fire regardless of what the model decides,
+      so you can grant more autonomy without crossing your fingers. Ties straight to the Trust &amp; Safety section.
     </aside>
   </section>
 
-  <!-- 20. SUB-AGENTS -->
+  <!-- 17. SUB-AGENTS -->
   <section class="slide" data-title="Sub-agents">
     <div class="slide__inner">
       <h2>Sub-agents: isolation &amp; parallelism</h2>
@@ -530,7 +500,7 @@ PreToolUse(Bash):
         </div>
         <div>
           <div class="callout">
-            Think of it as <strong>delegation</strong>: you hand off a scoped job, the sub-agent burns its own context budget on it, and reports back a tidy result — exactly like a junior dev returning with findings, not their whole browser history.
+            Think of it as <strong>delegation</strong>: you hand off a scoped job, the sub-agent burns its own context budget on it, and reports back a tidy result — like a junior dev returning with findings, not their whole browser history.
           </div>
         </div>
       </div>
@@ -541,16 +511,42 @@ PreToolUse(Bash):
     </aside>
   </section>
 
-  <!-- 21. SECTION: PATTERNS -->
+  <!-- ====================================================== -->
+  <!-- §02 — WORKFLOWS & PATTERNS                              -->
+  <!-- ====================================================== -->
+
+  <!-- 18. SECTION: PATTERNS -->
   <section class="slide slide--section" data-title="§ Workflows & Patterns">
     <div class="slide__inner center">
-      <span class="section-num">05</span>
+      <span class="section-num">02</span>
       <h2 class="section-title">Workflows &amp; Patterns</h2>
-      <p class="section-sub">Where it all comes together day to day.</p>
+      <p class="section-sub">Composing the levers into a reliable day-to-day flow.</p>
     </div>
   </section>
 
-  <!-- HANDOFFS -->
+  <!-- 19. CORE PATTERNS (+ match-the-model tip) -->
+  <section class="slide" data-title="Core patterns">
+    <div class="slide__inner">
+      <h2>Patterns worth internalizing</h2>
+      <div class="grid grid--2">
+        <div class="card"><h3>Explore → Plan → Implement → Verify</h3><p>Make it understand &amp; plan <em>before</em> writing code. Review the plan; catching a bad approach here is free.</p></div>
+        <div class="card"><h3>Plan / spec first</h3><p>For anything non-trivial, a written plan you approve beats letting it dive straight in.</p></div>
+        <div class="card"><h3>Test-driven with AI</h3><p>Have it write tests first, confirm they fail, then implement until green. Tests become the spec &amp; the guardrail.</p></div>
+        <div class="card"><h3>Generate → review → refine</h3><p>Small diffs, tight loops. Review each step; never accept a wall of code blind.</p></div>
+        <div class="card"><h3>Parallel agents / worktrees</h3><p>Independent tasks in separate worktrees or sub-agents at the same time.</p></div>
+        <div class="card"><h3>Supervised vs. autonomous</h3><p>Match the leash to the stakes &amp; your trust. Hooks &amp; tests let you lengthen it safely.</p></div>
+      </div>
+      <p class="footnote">Tip — <strong>match the model to the task</strong>: a fast/cheap tier (Haiku, Flash) for mechanical edits and lookups; a frontier tier + higher reasoning effort for planning and gnarly bugs; a mid tier as the everyday default. The skill is the <em>cheapest tier that actually gets it right</em>.</p>
+    </div>
+    <aside class="notes">
+      If you push one pattern, push Explore→Plan→Implement→Verify. The biggest failures come from skipping straight to
+      "implement." A 30-second plan review prevents 30 minutes of cleanup. Right-sizing the model is the same discipline
+      as right-sizing the leash — don't leave everything on the most expensive model out of habit, and don't under-power a
+      genuinely hard task either.
+    </aside>
+  </section>
+
+  <!-- 20. HANDOFFS -->
   <section class="slide" data-title="Handoffs">
     <div class="slide__inner">
       <h2>Handoffs: context dies, artifacts persist</h2>
@@ -588,7 +584,7 @@ Move auth to middleware.
     </aside>
   </section>
 
-  <!-- GIT WORKFLOW -->
+  <!-- 21. GIT WORKFLOW -->
   <section class="slide" data-title="Git rhythm">
     <div class="slide__inner">
       <h2>Adjust your git rhythm</h2>
@@ -608,7 +604,7 @@ Move auth to middleware.
             <li>Local commits are cheap and reversible; a push is outward-facing — keep a human on that button.</li>
             <li>Don't let agents auto-push. Review the diff, then push yourself.</li>
             <li>Isolate risky work on a <strong>branch</strong> so a bad run never touches main.</li>
-            <li>Running agents in parallel? <strong>One worktree per agent</strong> — each gets its own branch and working dir off the same repo, so they never clobber each other's tree or index; merge only the runs that pan out.</li>
+            <li>Running agents in parallel? <strong>One worktree per agent</strong> — each gets its own branch and working dir off the same repo, so they never clobber each other; merge only the runs that pan out.</li>
           </ul>
         </div>
       </div>
@@ -617,145 +613,44 @@ Move auth to middleware.
     <aside class="notes">
       The mindset shift: commits stop being "I finished a feature" and become "I have a known-good state to fall back to." Frequent
       checkpoints are what make it safe to let the agent run — rollback is cheaper than correction. Push is the line where reversibility
-      drops off, so that's where the human stays in the loop. Ties straight back to "verify everything" and "supervised vs. autonomous."
-      Worktrees are the unlock for true parallelism: one repo, N working dirs, so several agents run at once without fighting over the
-      same files — you review and merge the branches that worked, throw away the rest.
+      drops off, so that's where the human stays in the loop. Worktrees are the unlock for true parallelism: one repo, N working dirs.
     </aside>
   </section>
 
-  <!-- 24. CORE PATTERNS -->
-  <section class="slide" data-title="Core patterns">
-    <div class="slide__inner">
-      <h2>Patterns worth internalizing</h2>
-      <div class="grid grid--2">
-        <div class="card"><h3>Explore → Plan → Implement → Verify</h3><p>Make it understand &amp; plan <em>before</em> writing code. Review the plan; catching a bad approach here is free.</p></div>
-        <div class="card"><h3>Plan / spec first</h3><p>For anything non-trivial, a written plan you approve beats letting it dive straight in.</p></div>
-        <div class="card"><h3>Test-driven with AI</h3><p>Have it write tests first, confirm they fail, then implement until green. Tests become the spec &amp; the guardrail.</p></div>
-        <div class="card"><h3>Generate → review → refine</h3><p>Small diffs, tight loops. Review each step; never accept a wall of code blind.</p></div>
-        <div class="card"><h3>Parallel agents / worktrees</h3><p>Independent tasks in separate worktrees or sub-agents at the same time.</p></div>
-        <div class="card"><h3>Supervised vs. autonomous</h3><p>Match the leash to the stakes &amp; your trust. Hooks &amp; tests let you lengthen it safely.</p></div>
-      </div>
-    </div>
-    <aside class="notes">
-      If you push one pattern, push Explore→Plan→Implement→Verify. The biggest failures come from skipping straight to
-      "implement." A 30-second plan review prevents 30 minutes of cleanup. The rest are variations on "small, verified steps."
-    </aside>
-  </section>
+  <!-- ====================================================== -->
+  <!-- §03 — TRUST & SAFETY                                    -->
+  <!-- ====================================================== -->
 
-  <!-- MODEL SELECTION -->
-  <section class="slide" data-title="Match the model">
-    <div class="slide__inner">
-      <h2>Match the model to the task</h2>
-      <p class="lead">The model isn't one fixed thing. Every provider gives you a <strong>capability tier</strong> and, increasingly, a <strong>reasoning-effort dial</strong>. Burning top-tier compute on a one-line rename is as wasteful as sending a vague prompt to a frontier model.</p>
-      <div class="cols">
-        <div>
-          <h3>Capability tier</h3>
-          <ul class="bullets">
-            <li><strong>Fast &amp; cheap</strong> (Haiku, Flash, the "mini" tiers) — mechanical edits, formatting, lookups, high-volume loops.</li>
-            <li><strong>Frontier</strong> (Opus, GPT-5, Gemini Pro) — architecture, gnarly bugs, ambiguous specs — anything you'd hand a senior dev.</li>
-            <li>A mid tier (e.g. Sonnet) is the sane default for everyday coding.</li>
-          </ul>
-        </div>
-        <div>
-          <h3>Reasoning effort</h3>
-          <ul class="bullets">
-            <li>"Thinking" / extended reasoning trades latency &amp; tokens for better planning on hard problems.</li>
-            <li>Turn it <strong>up</strong> for planning and tricky debugging; <strong>down</strong> for rote work.</li>
-          </ul>
-          <div class="callout">Names are per-vendor; the dial is universal. The skill is reaching for the <strong>cheapest tier that will actually get it right.</strong></div>
-        </div>
-      </div>
-    </div>
-    <aside class="notes">
-      Ties back to the cost slide and to "supervised vs. autonomous": right-sizing the model is the same discipline as
-      right-sizing the leash. The common mistake is leaving everything on the most expensive model out of habit — the opposite
-      mistake, under-powering a genuinely hard task, just produces confident slop. A frontier model with a good plan usually
-      beats a cheaper one thrashing. Match spend to difficulty, not to anxiety.
-    </aside>
-  </section>
-
-  <!-- 25. ANTI-PATTERNS -->
-  <section class="slide" data-title="Anti-patterns">
-    <div class="slide__inner">
-      <h2>Anti-patterns to drop</h2>
-      <div class="grid grid--2">
-        <div class="card card--dont"><h3>✗ The kitchen-sink prompt</h3><p>Five goals in one message. Scope down — one clear task at a time.</p></div>
-        <div class="card card--dont"><h3>✗ The immortal session</h3><p>Never clearing. You're running on pure context rot by hour two.</p></div>
-        <div class="card card--dont"><h3>✗ Blind accept</h3><p>Merging code you didn't read. You own every line you ship.</p></div>
-        <div class="card card--dont"><h3>✗ Re-explaining forever</h3><p>Correcting the same thing daily instead of writing it into the instruction file.</p></div>
-        <div class="card card--dont"><h3>✗ Over-automation</h3><p>Letting it run unsupervised on high-stakes changes with no tests or guardrails.</p></div>
-        <div class="card card--dont"><h3>✗ Treating it as a search box</h3><p>Ignoring tools, instruction files, and the agent loop entirely — chat-era habits.</p></div>
-      </div>
-    </div>
-    <aside class="notes">
-      These are the habits intermediate users specifically fall into — they've gotten comfortable and stopped being
-      deliberate. Each anti-pattern maps to a concept we covered: scope, context rot, verification, instruction files.
-    </aside>
-  </section>
-
-  <!-- 26. SECTION: TRUST & SAFETY -->
+  <!-- 22. SECTION: TRUST & SAFETY -->
   <section class="slide slide--section" data-title="§ Trust & Safety">
     <div class="slide__inner center">
-      <span class="section-num">06</span>
+      <span class="section-num">03</span>
       <h2 class="section-title">Trust &amp; Safety</h2>
       <p class="section-sub">Speed means nothing if you ship the wrong thing.</p>
     </div>
   </section>
 
-  <!-- 27. VERIFY -->
-  <section class="slide" data-title="Verify everything">
+  <!-- 23. VERIFY & OWN IT (merged) -->
+  <section class="slide" data-title="Verify & own it">
     <div class="slide__inner">
-      <h2>Trust, but verify</h2>
-      <p class="lead">The model is <strong>confidently wrong</strong> sometimes — plausible code that doesn't compile, tests that assert nothing, APIs that don't exist. Build verification into the loop so you're not the only check.</p>
+      <h2>Trust, but verify — and own the result</h2>
+      <p class="lead">The model is <strong>confidently wrong</strong> sometimes — plausible code that doesn't compile, tests that assert nothing, APIs that don't exist. The most valuable thing you bring isn't the prompt; it's <strong>responsibility for the output.</strong></p>
       <div class="grid grid--3">
         <div class="card"><h3>Automated gates</h3><p>Tests, types, linters, CI — let the agent run them and self-correct before you even look.</p></div>
         <div class="card"><h3>Hooks as guardrails</h3><p>Deterministic checks that always fire, regardless of what the model decides.</p></div>
-        <div class="card"><h3>Human review</h3><p>Small diffs, read every change. The AI accelerates you; it doesn't absolve you.</p></div>
+        <div class="card"><h3>You, the owner</h3><p>Read every diff and understand it <em>before</em> it lands. Output is a draft, not a verdict — your name is on the commit.</p></div>
       </div>
-      <div class="callout">The more verification you wire in, the more autonomy you can safely grant. Guardrails buy you speed.</div>
+      <div class="callout">The more verification you wire in, the more autonomy you can safely grant. Owners ship faster because they steer instead of correcting after the fact — and <strong>if you can't explain it, you don't own it yet.</strong></div>
     </div>
     <aside class="notes">
-      Connect to autonomy: people ask "can I let it run on its own?" Answer: in proportion to your guardrails. Strong
-      tests + hooks + CI = long leash. None of those = supervise closely. Verification isn't friction, it's what unlocks speed.
+      Connect to autonomy: people ask "can I let it run on its own?" Answer: in proportion to your guardrails. Strong tests
+      + hooks + CI = long leash; none of those = supervise closely. Ownership is the *why*, verification is the *how*. Reframe
+      acceptance: you're not approving the AI's work, you're claiming it as your own. Shipping code you can't explain is how
+      teams end up with a codebase no human understands.
     </aside>
   </section>
 
-  <!-- 28. CODE OWNERSHIP -->
-  <section class="slide" data-title="Own what you ship">
-    <div class="slide__inner">
-      <h2>You own every line you ship</h2>
-      <p class="lead">The most valuable thing you bring to an AI workflow isn't the prompt — it's <strong>responsibility for the result</strong>. The developer who treats the output as their own work gets far more out of the same model than the one who just clicks accept.</p>
-      <div class="grid grid--2">
-        <div class="card card--dont">
-          <h3>✗ The passenger</h3>
-          <ul class="bullets">
-            <li>Merges what <em>looks</em> right; can't explain it in review a week later.</li>
-            <li>Lets the model pick the architecture, the libraries, the abstractions — by default.</li>
-            <li>Treats "the AI wrote it" as a defense when it breaks in prod.</li>
-            <li>Accumulates code nobody understands. Every bug becomes a cold read.</li>
-          </ul>
-        </div>
-        <div class="card card--do">
-          <h3>✓ The owner</h3>
-          <ul class="bullets">
-            <li>Reads every diff and understands it <em>before</em> it lands — output is a draft, not a verdict.</li>
-            <li>Steers: sets constraints, rejects weak approaches, sends it back to try again.</li>
-            <li>Knows the codebase well enough to catch the confident wrong answer.</li>
-            <li>Can defend every line in review — because it's their line now.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="callout">Your name is on the commit. Treat AI output like a teammate's PR: useful, fast, and <strong>yours to review</strong> before it merges.</div>
-    </div>
-    <aside class="notes">
-      This is the mindset behind "verify everything." Ownership is the <em>why</em>; verification is the <em>how</em>. The point isn't to slow
-      down — owners ship faster because they steer instead of correcting after the fact, and they're not afraid of a big diff because they
-      understood it as it formed. Reframe acceptance: you're not approving the AI's work, you're claiming it as your own. If you can't
-      explain it, you don't own it yet — and shipping code you can't explain is how teams end up with a codebase no human understands.
-    </aside>
-  </section>
-
-  <!-- 29. SECURITY -->
+  <!-- 24. SECURITY -->
   <section class="slide" data-title="Security & data hygiene">
     <div class="slide__inner">
       <h2>Security &amp; data hygiene</h2>
@@ -771,7 +666,7 @@ Move auth to middleware.
           <h3>Prompt injection is real</h3>
           <ul class="bullets">
             <li>Untrusted content the agent reads — a web page, an issue, a tool's output — can contain <strong>instructions</strong>. The agent may follow them.</li>
-            <li>The <strong>"lethal trifecta"</strong>: <strong>private data</strong> + exposure to <strong>untrusted content</strong> + the ability to <strong>act/communicate externally</strong>. Any agent with all three can be turned into an exfiltration tool. Risk scales with autonomy.</li>
+            <li>The <strong>"lethal trifecta"</strong>: <strong>private data</strong> + <strong>untrusted content</strong> + the ability to <strong>act/communicate externally</strong>. Any agent with all three can be turned into an exfiltration tool. Risk scales with autonomy.</li>
           </ul>
         </div>
       </div>
@@ -783,7 +678,7 @@ Move auth to middleware.
     </aside>
   </section>
 
-  <!-- 30. PUTTING IT TOGETHER -->
+  <!-- 25. PUTTING IT TOGETHER -->
   <section class="slide" data-title="A day in the life">
     <div class="slide__inner">
       <h2>Putting it together — a real flow</h2>
@@ -802,25 +697,27 @@ Move auth to middleware.
     </aside>
   </section>
 
-  <!-- 31. TAKEAWAYS -->
+  <!-- 26. TAKEAWAYS (+ anti-patterns folded) -->
   <section class="slide" data-title="Takeaways">
     <div class="slide__inner">
       <h2>If you remember five things</h2>
       <ul class="takeaways">
-        <li><span class="num">1</span><div><strong>It's all one loop.</strong> Context → model → tool → result. Every feature shapes a box in it.</div></li>
-        <li><span class="num">2</span><div><strong>Context is a finite budget.</strong> Curate it. Relevance beats volume; clear early and often.</div></li>
-        <li><span class="num">3</span><div><strong>Write it down once.</strong> Instruction files kill repetition; handoff artifacts beat fragile sessions.</div></li>
-        <li><span class="num">4</span><div><strong>Make it deterministic where it matters.</strong> Hooks &amp; tests &gt; hoping the model remembers.</div></li>
-        <li><span class="num">5</span><div><strong>Verify everything.</strong> Guardrails are what let you go fast and trust the output.</div></li>
+        <li><span class="num">1</span><div><strong>Model vs. harness.</strong> The model is fixed; the harness is yours. All your leverage is in what you put around it.</div></li>
+        <li><span class="num">2</span><div><strong>It's all one loop.</strong> Context → model → tool → result. Every feature shapes a box in it.</div></li>
+        <li><span class="num">3</span><div><strong>Context is a finite budget.</strong> Curate it. Relevance beats volume; clear early and often.</div></li>
+        <li><span class="num">4</span><div><strong>Write it down once.</strong> Instruction files kill repetition; handoff artifacts beat fragile sessions.</div></li>
+        <li><span class="num">5</span><div><strong>Verify &amp; own everything.</strong> Hooks &amp; tests &gt; hoping the model remembers — and your name is on the commit.</div></li>
       </ul>
+      <p class="footnote">…and drop the habits that fight all five: the immortal never-cleared session, the kitchen-sink five-goals-in-one prompt, blind-accepting code you didn't read, and re-explaining daily what belongs in your instruction file.</p>
     </div>
     <aside class="notes">
-      Land the plane on the mindset shift: from "user of a chatbot" to "engineer of a context + a loop." That framing
-      is what separates people who get 2x from people who get 10x out of the same models.
+      Land the plane on the mindset shift: from "user of a chatbot" to "engineer of a harness + a context + a loop." That framing
+      is what separates people who get 2x from people who get 10x out of the same models. The footnote anti-patterns each map to
+      one of the five: immortal session → context budget, kitchen-sink → scope/loop, blind accept → verify &amp; own, re-explaining → instruction files.
     </aside>
   </section>
 
-  <!-- 32. THANKS -->
+  <!-- 27. THANKS -->
   <section class="slide slide--title" data-title="Thanks">
     <div class="slide__inner center">
       <p class="kicker">fin</p>
@@ -861,7 +758,7 @@ Move auth to middleware.
       <tr><td><span class="key">N</span></td><td>Speaker notes</td></tr>
       <tr><td><span class="key">F</span></td><td>Fullscreen</td></tr>
       <tr><td><span class="key">?</span></td><td>This help</td></tr>
-      <tr><td><span class="key">Esc</span></td><td>Close overlay</td></tr>
+      <tr><td><span class="key">Esc</span></td><td>Close any overlay</td></tr>
     </table>
     <p class="help__hint">Tip: the URL tracks the slide — bookmark or share a specific one.</p>
   </div>
