@@ -374,6 +374,41 @@ PreToolUse(Bash):
     </aside>
   </section>
 
+  <!-- 11b. MCP vs SKILLS -->
+  <section class="slide" data-title="MCP vs skills">
+    <div class="slide__inner">
+      <h2>MCP vs skills — capability vs know-how</h2>
+      <p class="lead">Both "extend the agent," so they get conflated — but they sit on <strong>different axes</strong>. One adds what the model <em>can reach</em>; the other adds what it <em>knows to do</em>.</p>
+      <div class="grid grid--2">
+        <div class="card">
+          <span class="card__tag">MCP</span>
+          <h3>New capability</h3>
+          <ul class="bullets">
+            <li>A live connection to <strong>external tools &amp; data</strong> — GitHub, your DB, a browser, internal APIs.</li>
+            <li>Tool definitions load <strong>up front</strong>, so each server carries a standing token <em>and</em> security cost.</li>
+            <li>You pick which servers are enabled.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card__tag">Skill</span>
+          <h3>Packaged know-how</h3>
+          <ul class="bullets">
+            <li>A <strong>procedure</strong> the model runs with tools it <em>already</em> has — no new connection.</li>
+            <li><strong>Model-invoked</strong> when a task matches; progressive disclosure means only the one-line description sits in context until it's used.</li>
+            <li>Shipped as files in the repo.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout">They <strong>compose</strong> — a skill can call an MCP tool. Reach for <strong>MCP when the agent can't reach something</strong>; reach for a <strong>skill when it can act but needs to be told how</strong>.</div>
+    </div>
+    <aside class="notes">
+      The common trap: bolting on an MCP server when the real need was a skill — a documented workflow over tools you
+      already have. Skills are far cheaper on context (one-line description vs. a full set of tool definitions always
+      loaded), so they're the lighter default. Tie back to the context-budget theme: every always-on server is rent you
+      pay on the window. MCP earns its cost when the agent genuinely can't reach the system any other way.
+    </aside>
+  </section>
+
   <!-- 12. HANDOFFS -->
   <section class="slide" data-title="Handoffs">
     <div class="slide__inner">
